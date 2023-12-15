@@ -5,9 +5,9 @@ import packageData from '../package.json'
 const firefoxExtra = {
     browser_specific_settings: {
         gecko: {
-            id: GECKO_ID
+            id: GECKO_ID,
         }
-    }
+    },
 }
 
 export default defineManifest({
@@ -22,10 +22,10 @@ export default defineManifest({
         48: 'img/logo-48.png',
         128: 'img/logo-128.png',
     },
-    // action: {
-    //   default_popup: 'src/popup/popup.html',
-    //   default_icon: 'img/logo-48.png',
-    // },
+    action: {
+      default_popup: 'src/options/options.html',
+      default_icon: 'img/logo-48.png',
+    },
     options_ui: {
         page: 'src/options/options.html',
         open_in_tab: true
