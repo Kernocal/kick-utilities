@@ -26,3 +26,8 @@
     margin: 0;
   }
   
+
+.emoji {
+    width: max(3cqmin, 50px);
+    height: max(3cqmin, 50px);
+}

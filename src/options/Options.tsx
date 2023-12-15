@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import permission from '../assets/permission.png';
-import noPermission from '../assets/noPermission.png';
+import noPermissionGif from '../assets/noPermission.gif';
 
     // function revokePermission() {
     //     chrome.permissions.remove({origins: ["*://*.kick.com/*"]}, (e) => {
@@ -16,16 +16,20 @@ export const Options = () => {
         });
     }
 
-    useEffect(() => {
+    function checkPermission() {
         chrome.permissions.contains({origins: ["*://*.kick.com/*"]}, (perm) => {
             setHasPermission(perm);
         });
+    }
+
+    useEffect(() => {
+        checkPermission();
     }, []);
 
     return (
         <main>
-            <div className="flex flex-col justify-center items-center">
-                <img src={hasPermission ? permission : noPermission} alt="tt" className="w-[3cqw] h-[3cqw]" />
+            <div className="flex flex-col justify-center items-center p-2 h-full" onClick={checkPermission}>
+                <img src={hasPermission ? permission : noPermissionGif} alt="Kick emoji" className="emoji" />
                 {hasPermission && <>
                     <h1 className="text-3xl font-bold">Permissions granted, carry on.</h1>
                     {/* <button onClick={revokePermission} className="bg-red-950 p-2 m-2 w-fit h-fit text-xl">Revoke</button> */}
