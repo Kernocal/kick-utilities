@@ -6,8 +6,10 @@
 .env.test.local
 .env.production.local
 .history
+.thoughts
 *.log
 secrets.*.js
 node_modules
 build
+web-ext-artifacts
 /package
