@@ -1,3 +1,3 @@
-# kick-extension
+# Kick Utilities
 
-Get watch vod button on clips. waow
+Adds watch vod button on clips.
