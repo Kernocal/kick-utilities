@@ -1,6 +1,11 @@
 function sendMessage(tabID: number, message: {}, callback: ((res: any) => void)) {
     try {
-        const res = chrome.tabs.sendMessage(tabID, message, callback);
+        const res = chrome.tabs.sendMessage(tabID, message, (res) => {
+            if (chrome.runtime.lastError) {
+                console.warn("Callback failed, tab likely didn't exist", chrome.runtime.lastError.message);
+            }
+            callback(res);
+        });
         return res;
     } catch (e) {
         console.warn("Tab likely doesn't exist.", e);
