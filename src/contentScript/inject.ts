@@ -15,10 +15,7 @@
                     if (video) {
                         flag = true;
                         video.addEventListener("loadedmetadata", (e) => {
-                            console.log("mutation: loadedmetadata");
-                            console.log("mutation: sleep 4");
                             new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-                                console.log("mutation: set time", time);
                                 (video as HTMLVideoElement).currentTime = time - 5;
                             });
                             observer.disconnect();

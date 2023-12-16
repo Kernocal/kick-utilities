@@ -18,12 +18,9 @@ async function getData(clipID: string, username: string) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === "clip") {
-        console.log("clip trying");
         getData(request.clipID, request.username).then(({userData, clipData}) => {
             const stream = userData.previous_livestreams.find((stream: any) => stream.id === Number(clipData.clip.livestream_id));
-            console.log("stream", stream);
             if (stream !== undefined) {
-                console.log("clip got stream");
                 const streamStarted = new Date(stream.start_time);
                 const clipStarted = new Date(clipData.clip.started_at);
                 // clipStart: clipEnd - clipData.clip.duration
@@ -37,9 +34,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                             <div ${vDataAttribute} class="inner-label">Watch vod</div>
                         </div>
                     </a>`;
-                console.log("clip trying to set button");
                 if (parentContainer) {
-                    console.log("clip setting button");
                     parentContainer.insertAdjacentHTML("beforeend", vodHTML);
                 }
             }
@@ -48,7 +43,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
     if (request.message === "video") {
-        console.log("got time:", request.time);
         document.dispatchEvent(new CustomEvent("KICKY_GET_TIME", {detail: request.time}));
         sendResponse({message: "video"});
         return true;
