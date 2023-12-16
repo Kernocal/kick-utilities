@@ -17,14 +17,15 @@ export default defineManifest({
     version: packageData.version,
     manifest_version: 3,
     icons: {
-        16: 'img/logo-16.png',
-        32: 'img/logo-32.png',
-        48: 'img/logo-48.png',
-        128: 'img/logo-128.png',
+        16: 'img/logo16.png',
+        32: 'img/logo32.png',
+        48: 'img/logo48.png',
+        128: 'img/logo128.png',
+        512: 'img/logo512.png'
     },
     action: {
       default_popup: 'src/options/options.html',
-      default_icon: 'img/logo-48.png',
+      default_icon: 'img/logo128.png',
     },
     options_ui: {
         page: 'src/options/options.html',
@@ -47,7 +48,7 @@ export default defineManifest({
     ],
     web_accessible_resources: [
         {
-            resources: ['src/contentScript/index.ts', 'img/logo-16.png', 'img/logo-32.png', 'img/logo-48.png', 'img/logo-128.png'],
+            resources: ['src/contentScript/index.ts', 'img/logo16.png', 'img/logo32.png', 'img/logo48.png', 'img/logo128.png', 'img/logo512.png'],
             matches: ['*://*.kick.com/*'],
         },
     ],

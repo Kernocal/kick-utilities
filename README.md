@@ -1,6 +1,6 @@
 # Kick Utilities
 Add watch vod button to Kick clips.
-![extension image](demo.png "Kick Utilities")
+![extension image](screenshots/demo.png "Kick Utilities")
 
 
 # Build from source
