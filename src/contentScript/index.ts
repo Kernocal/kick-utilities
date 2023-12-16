@@ -18,10 +18,13 @@ async function getData(clipID: string, username: string) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === "clip") {
+        console.log("clip trying");
         getData(request.clipID, request.username).then(({userData, clipData}) => {
             const stream = userData.previous_livestreams.find((stream: any) => stream.id === Number(clipData.clip.livestream_id));
-            if (stream.length) {
-                const streamStarted = new Date(stream[0].start_time);
+            console.log("stream", stream);
+            if (stream !== undefined) {
+                console.log("clip got stream");
+                const streamStarted = new Date(stream.start_time);
                 const clipStarted = new Date(clipData.clip.started_at);
                 // clipStart: clipEnd - clipData.clip.duration
                 const clipEnd = Math.trunc((clipStarted.valueOf() - streamStarted.valueOf()) / 1000);
@@ -29,12 +32,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 const vDataAttribute = downloadButton?.getAttributeNames().find((el) => el.startsWith("data-v"));
                 const parentContainer = downloadButton?.closest(".flex.items-center");
                 const vodHTML = `
-                    <a ${vDataAttribute} class="variant-highlight size-md base-button" href="https://kick.com/video/${stream[0].video.uuid}?t=${clipEnd}"> 
+                    <a ${vDataAttribute} class="variant-highlight size-md base-button" href="https://kick.com/video/${stream.video.uuid}?t=${clipEnd}"> 
                         <div ${vDataAttribute} class="button-content"> 
                             <div ${vDataAttribute} class="inner-label">Watch vod</div>
                         </div>
                     </a>`;
+                console.log("clip trying to set button");
                 if (parentContainer) {
+                    console.log("clip setting button");
                     parentContainer.insertAdjacentHTML("beforeend", vodHTML);
                 }
             }
