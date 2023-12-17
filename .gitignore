@@ -11,5 +11,5 @@
 secrets.*.js
 node_modules
 build
-web-ext-artifacts
+artifacts
 /package
