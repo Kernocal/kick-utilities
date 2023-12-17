@@ -1,6 +1,6 @@
-import { defineManifest } from '@crxjs/vite-plugin'
-import { BROWSER, GECKO_ID } from './env'
-import packageData from '../package.json'
+import { defineManifest } from '@crxjs/vite-plugin';
+import { BROWSER, GECKO_ID } from './env';
+import packageData from '../package.json';
 
 const firefoxExtra = {
     browser_specific_settings: {
@@ -8,10 +8,10 @@ const firefoxExtra = {
             id: GECKO_ID,
         }
     },
-}
+};
 
 export default defineManifest({
-    ...(BROWSER === "firefox" ? firefoxExtra : {}),
+    ...(BROWSER === 'firefox' ? firefoxExtra : {}),
     name: packageData.name,
     description: packageData.description,
     version: packageData.version,
@@ -24,24 +24,26 @@ export default defineManifest({
         512: 'img/logo512.png'
     },
     action: {
-      default_popup: 'src/options/options.html',
-      default_icon: 'img/logo128.png',
+        default_popup: 'src/options/options.html',
+        default_icon: 'img/logo128.png',
     },
     options_ui: {
         page: 'src/options/options.html',
         open_in_tab: true
     },
     background: {
-        ...(BROWSER === "firefox" ? {
-            scripts: ['src/background/index.ts']
-        } : {
-            service_worker: 'src/background/index.ts'
-        }),
+        ...(BROWSER === 'firefox'
+            ? {
+                    scripts: ['src/background/index.ts']
+                }
+            : {
+                    service_worker: 'src/background/index.ts'
+                }),
         type: 'module',
     },
     content_scripts: [
         {
-            run_at: "document_start",
+            run_at: 'document_start',
             matches: ['*://*.kick.com/*'],
             js: ['src/contentScript/index.ts'],
         },

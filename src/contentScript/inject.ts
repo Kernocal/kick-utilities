@@ -1,9 +1,9 @@
 (() => {
-    console.log("Kick Utilities: Injected script.");
+    console.log('Kick Utilities: Injected script.');
     let time = 0;
     let flag = false;
 
-    document.addEventListener("KICKY_GET_TIME", (e) => {
+    document.addEventListener('KICKY_GET_TIME', (e) => {
         time = (e as CustomEvent).detail;
     });
 
@@ -11,15 +11,15 @@
         changes.forEach((change) => {
             change.addedNodes.forEach((added) => {
                 if ((added as HTMLElement).querySelector && !flag) {
-                    const video = (added as HTMLElement).querySelector("video.vjs-tech");
+                    const video = (added as HTMLElement).querySelector('video.vjs-tech');
                     if (video) {
                         flag = true;
-                        video.addEventListener("loadedmetadata", (e) => {
+                        video.addEventListener('loadedmetadata', (e) => {
                             new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
                                 (video as HTMLVideoElement).currentTime = time - 5;
                             });
                             observer.disconnect();
-                        })
+                        });
                     }
                 }
             });
@@ -31,6 +31,5 @@
             childList: true,
             subtree: true,
         });
-    }
-
+    };
 })();
