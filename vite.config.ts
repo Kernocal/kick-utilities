@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 import UnoCSS from 'unocss/vite';
 import manifest from './src/manifest';
 import packageData from './package.json';
-import { BROWSER, PRODUCTION } from './src/env';
+import { BROWSER, PRODUCTION, ZIP } from './src/env';
 
 export default defineConfig(({ mode }) => {
     return {
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
             UnoCSS(), 
             crx({ manifest: manifest, browser: BROWSER }), 
             react(),
-            PRODUCTION && zipPack({
+            PRODUCTION && ZIP && zipPack({
                 outFileName: `kick-utilites-${packageData.version}-${BROWSER === 'firefox' ? 'ff' : 'cr'}.zip`,
                 inDir: 'build',
                 outDir: 'artifacts'
