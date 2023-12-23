@@ -16,25 +16,41 @@ async function getData(clipID: string, username: string) {
     return { userData, clipData };
 }
 
-function createButton(userData: any, clipData: any) {
+function useData(userData: any, clipData: any) {
     const stream = userData.previous_livestreams.find((stream: any) => stream.id === Number(clipData.clip.livestream_id));
     if (stream !== undefined) {
         const streamStarted = new Date(stream.start_time);
         const clipStarted = new Date(clipData.clip.started_at);
         // clipStart: clipEnd - clipData.clip.duration
         const clipEnd = Math.trunc((clipStarted.valueOf() - streamStarted.valueOf()) / 1000);
-        const downloadButton = Array.from(document.querySelectorAll('div.inner-label')).find(ele => ele.textContent === 'Download');
-        const vDataAttribute = downloadButton?.getAttributeNames().find(el => el.startsWith('data-v'));
-        const parentContainer = downloadButton?.closest('.flex.items-center');
-        const vodHTML = `
-            <a ${vDataAttribute} class="variant-highlight size-md base-button" href="https://kick.com/video/${stream.video.uuid}?t=${clipEnd}"> 
+        createButton(stream.video.uuid, clipEnd);
+    } else {
+        createButton('no-vod', -1);
+    }
+}
+
+function createButton(uuid: any, clipEnd: number) {
+    let disabled = false;
+    let buttonText = 'Watch Vod';
+    let buttonStyle = '';
+    if (clipEnd === -1) {
+        buttonText = 'No Vod Found';
+        disabled = true;
+        buttonStyle = 'background-color: rgb(7 8 9 / 1);color: rgb(66 66 66 / 1);pointer-events: none;cursor: default;';
+    }
+    const downloadButton = Array.from(document.querySelectorAll('div.inner-label')).find(ele => ele.textContent === 'Download');
+    const vDataAttribute = downloadButton?.getAttributeNames().find(el => el.startsWith('data-v'));
+    const parentContainer = downloadButton?.closest('.flex.items-center');
+    const vodHTML = `
+            <a ${vDataAttribute} 
+            class="variant-highlight size-md base-button" style="${buttonStyle}" 
+            href="https://kick.com/video/${uuid}?t=${clipEnd}"> 
                 <div ${vDataAttribute} class="button-content"> 
-                    <div ${vDataAttribute} class="inner-label">Watch vod</div>
+                    <div ${vDataAttribute} class="inner-label">${buttonText}</div>
                 </div>
             </a>`;
-        if (parentContainer) {
-            parentContainer.insertAdjacentHTML('beforeend', vodHTML);
-        }
+    if (parentContainer) {
+        parentContainer.insertAdjacentHTML('beforeend', vodHTML);
     }
 }
 
@@ -45,7 +61,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     } else if (request.message === 'clip') {
         getData(request.clipID, request.username).then(({ userData, clipData }) => {
-            createButton(userData, clipData); 
+            useData(userData, clipData);
         });
         sendResponse({ message: 'clip' });
         return true;
@@ -58,7 +74,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     if (!clipsSeen.includes(clipID)) {
                         clipsSeen.push(clipID);
                         getData(clipID, request.username).then(({ userData, clipData }) => {
-                            createButton(userData, clipData); 
+                            useData(userData, clipData); 
                         });
                     }
                 }
