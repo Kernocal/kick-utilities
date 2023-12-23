@@ -22,4 +22,6 @@ For firefox:
 pnpm run build:ff
 ```
 
+If you want build to create a zip add ZIP=true to .env
+
 Then you can load unpacked using the created /build folder.
